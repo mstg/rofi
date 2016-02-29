@@ -192,8 +192,8 @@
 
      if (is_regular_file(fpath)) {
          char rcm[255];
-         sprintf(rcm, "xdg-open ''%s'", fpath);
-         execsh(g_strdup(rcm), FALSE);
+         sprintf(rcm, "xdg-open \"%s\"", fpath);
+         execsh(g_strdup(rcm), TRUE);
          return MODE_EXIT;
      }
 
