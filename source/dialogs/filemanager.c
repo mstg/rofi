@@ -169,7 +169,12 @@
  static unsigned int filemanager_mode_get_num_entries ( const Mode *sw )
  {
      const FileManagerPrivateData *rmpd = (const FileManagerPrivateData *) sw->private_data;
-     return rmpd->filed_list_length;
+     if (sw->next_input) {
+         char rc[255];
+         sprintf(rc, "Command for: %s", sw->next_input_entry);
+         set_prompt(sw, g_strdup(rc));
+     }
+     return sw->next_input ? 0 : rmpd->filed_list_length;
  }
 
  static int is_regular_file(const char *path)
@@ -181,19 +186,35 @@
 
  static ModeMode filemanager_mode_result ( Mode *sw, int mretv, char **input, unsigned int selected_line )
  {
+     const FileManagerPrivateData *rmpd = (const FileManagerPrivateData *) sw->private_data;
+
+     if (sw->next_input) {
+         char rcm[255];
+         sprintf(rcm, "%s \"%s\"", input[0], sw->next_input_entry);
+         execsh(g_strdup(rcm), TRUE);
+         return MODE_EXIT;
+     }
+
+     int shift = ( ( mretv & MENU_SHIFT ) == MENU_SHIFT );
+     if (shift && selected_line > 0) {
+         sw->next_input = TRUE;
+          gchar *fpath = g_build_filename ( sw->filemanager_start_path, rmpd->filed_list[selected_line], NULL );
+         sw->next_input_entry = fpath;
+         return RELOAD_DIALOG;
+     }
+
      char first_c = input[0][0];
-     if (first_c == '/' && selected_line == -1) {
+     if (first_c == '/' && selected_line == (unsigned int)-1) {
         sw->filemanager_start_path = input[0];
         return FILEMANAGER_RELOAD_DIALOG;
      }
 
      if (selected_line == 0) {
          return MODE_EXIT;
-     } else if (selected_line == -1) {
+     } else if (selected_line == (unsigned int)-1) {
          return MODE_EXIT;
      }
 
-     const FileManagerPrivateData *rmpd = (const FileManagerPrivateData *) sw->private_data;
      gchar *fpath = g_build_filename ( sw->filemanager_start_path, rmpd->filed_list[selected_line], NULL );
 
      if (is_regular_file(fpath)) {
@@ -229,7 +250,8 @@
 
 static int filemanager_is_not_ascii ( const Mode *sw, unsigned int index )
 {
-    return 0;
+    const FileManagerPrivateData *rmpd = (const FileManagerPrivateData *) sw->private_data;
+    return !g_str_is_ascii ( rmpd->filed_list[index] );
 }
 
 static char *_get_display_value ( const Mode *sw, unsigned int selected_line, G_GNUC_UNUSED int *state, int get_entry )

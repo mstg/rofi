@@ -70,6 +70,8 @@ struct _Mode
     void                    *private_data;
     char                    *update_prompt;
     char                    *filemanager_start_path;
+    int                    next_input;
+    char                    *next_input_entry;
 
     /**
      * Free SWitcher
