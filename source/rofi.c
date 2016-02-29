@@ -238,8 +238,8 @@ void process_result ( RofiViewState *state )
         else if ( retv == FILEMANAGER_RELOAD_DIALOG ) {
             mode_destroy(sw);
             config.filemanager_start_path = mode_get_path(sw);
-            strcpy(input, "");
             mode_init(sw);
+            strcpy(input, "");
         }
         else if ( retv < MODE_EXIT ) {
             mode = ( retv ) % num_modi;

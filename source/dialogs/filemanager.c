@@ -181,6 +181,12 @@
 
  static ModeMode filemanager_mode_result ( Mode *sw, int mretv, char **input, unsigned int selected_line )
  {
+     char first_c = input[0][0];
+     if (first_c == '/' && selected_line == -1) {
+        sw->filemanager_start_path = input[0];
+        return FILEMANAGER_RELOAD_DIALOG;
+     }
+
      if (selected_line == 0) {
          return MODE_EXIT;
      } else if (selected_line == -1) {
@@ -193,7 +199,7 @@
      if (is_regular_file(fpath)) {
          char rcm[255];
          sprintf(rcm, "xdg-open \"%s\"", fpath);
-         execsh(g_strdup(rcm), TRUE);
+         execsh(g_strdup(rcm), FALSE);
          return MODE_EXIT;
      }
 
