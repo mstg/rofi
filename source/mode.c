@@ -157,6 +157,30 @@ void *mode_get_private_data ( const Mode *mode )
     return mode->private_data;
 }
 
+void mode_set_update_prompt ( Mode *mode, char *update_prompt )
+{
+    g_assert ( mode != NULL );
+    mode->update_prompt = update_prompt;
+}
+
+char *mode_get_update_prompt ( const Mode *mode )
+{
+    g_assert ( mode != NULL );
+    return mode->update_prompt;
+}
+
+void mode_set_path ( Mode *mode, char *path )
+{
+    g_assert ( mode != NULL );
+    mode->filemanager_start_path = path;
+}
+
+char *mode_get_path ( const Mode *mode )
+{
+    g_assert ( mode != NULL );
+    return mode->filemanager_start_path;
+}
+
 void mode_set_private_data ( Mode *mode, void *pd )
 {
     g_assert ( mode != NULL );

@@ -235,6 +235,12 @@ void process_result ( RofiViewState *state )
         else if ( retv == RELOAD_DIALOG ) {
             // do nothing.
         }
+        else if ( retv == FILEMANAGER_RELOAD_DIALOG ) {
+            mode_destroy(sw);
+            config.filemanager_start_path = mode_get_path(sw);
+            strcpy(input, "");
+            mode_init(sw);
+        }
         else if ( retv < MODE_EXIT ) {
             mode = ( retv ) % num_modi;
         }
@@ -438,6 +444,11 @@ static int add_mode ( const char * token )
         modi[num_modi] = &drun_mode;
         num_modi++;
     }
+    // File manager dialog
+    else if (strcasecmp ( token, "filemanager") == 0 ) {
+        modi[num_modi] = &filemanager_mode;
+        num_modi++;
+    }
     // combi dialog
     else if ( strcasecmp ( token, "combi" ) == 0 ) {
         modi[num_modi] = &combi_mode;
@@ -477,6 +488,7 @@ static void setup_modi ( void )
     }
     mode_set_config ( &ssh_mode );
     mode_set_config ( &run_mode );
+    mode_set_config ( &filemanager_mode );
     mode_set_config ( &drun_mode );
 
 #ifdef WINDOW_MODE

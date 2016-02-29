@@ -113,6 +113,7 @@ static XrmOption xrmOptions[] = {
     { xrm_String,  "run-command",          { .str  = &config.run_command        }, NULL, "Run command to execute"                      },
     { xrm_String,  "run-list-command",     { .str  = &config.run_list_command   }, NULL, "Command to get extra run targets"            },
     { xrm_String,  "run-shell-command",    { .str  = &config.run_shell_command  }, NULL, "Run command to execute that runs in shell"   },
+    { xrm_String, "filemanager-start-path", { .str = &config.filemanager_start_path }, NULL, "Path to start the filemanager in (Default: $HOME)" },
 
     { xrm_Boolean, "disable-history",      { .num  = &config.disable_history    }, NULL, "Disable history in run/ssh"                  },
     { xrm_Boolean, "levenshtein-sort",     { .num  = &config.levenshtein_sort   }, NULL, "Use levenshtein sorting"                     },

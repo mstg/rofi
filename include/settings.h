@@ -92,6 +92,8 @@ typedef struct _Settings
     char           * run_shell_command;
     /** Command for listing executables */
     char           * run_list_command;
+    /** Command to set base path for filemanager */
+    char           * filemanager_start_path;
 
     /** Windows location/gravity */
     WindowLocation location;

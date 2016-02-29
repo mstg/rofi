@@ -41,6 +41,8 @@ struct RofiViewState
     scrollbar    *scrollbar;
     int          *distance;
     unsigned int *line_map;
+    char    *prompt;
+    const char    *input;
 
     unsigned int num_lines;
 

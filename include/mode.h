@@ -21,7 +21,9 @@ typedef enum
     /** Reload current DIALOG */
     RELOAD_DIALOG   = 1002,
     /** Previous dialog */
-    PREVIOUS_DIALOG = 1003
+    PREVIOUS_DIALOG = 1003,
+    /** Filemanager next */
+    FILEMANAGER_RELOAD_DIALOG = 1004
 } ModeMode;
 
 /**
@@ -206,6 +208,12 @@ void *mode_get_private_data ( const Mode *mode );
  * Set the private data object.
  */
 void mode_set_private_data ( Mode *mode, void *pd );
+
+void mode_set_update_prompt ( Mode *mode, char *update_prompt );
+char * mode_get_update_prompt ( const Mode *mode );
+void mode_set_path ( Mode *mode, char *path );
+char * mode_get_path( const Mode *mode );
+
 
 const char *mode_get_display_name ( const Mode *mode );
 

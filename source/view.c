@@ -816,6 +816,23 @@ void rofi_view_update ( RofiViewState *state )
         cairo_restore ( d );
     }
 
+    char *update_prompt = mode_get_update_prompt(state->sw);
+
+    if (update_prompt) {
+        if (g_strcmp0(update_prompt, state->prompt) != 0) {
+            state->prompt_tb = textbox_create ( TB_AUTOWIDTH, ( state->border ), ( state->border ),
+                                                0, state->line_height, NORMAL, update_prompt );
+            state->prompt = update_prompt;
+            int entrybox_width = state->w - ( 2 * ( state->border ) ) - textbox_get_width ( state->prompt_tb )
+                                          - textbox_get_width ( state->case_indicator );
+            TextboxFlags tfl = TB_EDITABLE;
+            tfl        |= ( ( state->menu_flags & MENU_PASSWORD ) == MENU_PASSWORD ) ? TB_PASSWORD : 0;
+            state->text = textbox_create ( tfl,
+                                           ( state->border ) + textbox_get_width ( state->prompt_tb ) + 2, ( state->border ),
+                                           entrybox_width, state->line_height, NORMAL, "" );
+        }
+    }
+
     // Always paint as overlay over the background.
     cairo_set_operator ( d, CAIRO_OPERATOR_OVER );
     if ( state->max_elements > 0 ) {
@@ -1424,6 +1441,7 @@ RofiViewState *rofi_view_create ( Mode *sw,
     RofiViewState *state = __rofi_view_state_create ();
     state->menu_flags    = menu_flags;
     state->sw            = sw;
+    state->prompt   = prompt;
     state->selected_line = UINT32_MAX;
     state->retv          = MENU_CANCEL;
     state->distance      = NULL;
@@ -1437,6 +1455,7 @@ RofiViewState *rofi_view_create ( Mode *sw,
     state->border         = config.padding + config.menu_bw;
     state->x11_event_loop = rofi_view_mainloop_iter;
     state->finalize       = finalize;
+    state->input = input;
 
     // Request the lines to show.
     state->num_lines       = mode_get_num_entries ( sw );
@@ -1526,6 +1545,8 @@ RofiViewState *rofi_view_create ( Mode *sw,
     }
     rofi_view_calculate_rows_columns ( state );
     rofi_view_calculate_window_and_element_width ( state );
+
+
 
     // Prompt box.
     state->prompt_tb = textbox_create ( TB_AUTOWIDTH, ( state->border ), ( state->border ),
@@ -1786,4 +1807,3 @@ Mode * rofi_view_get_mode ( RofiViewState *state )
 {
     return state->sw;
 }
-

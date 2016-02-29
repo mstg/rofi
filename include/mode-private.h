@@ -68,6 +68,8 @@ struct _Mode
 
     /** Pointer to private data. */
     void                    *private_data;
+    char                    *update_prompt;
+    char                    *filemanager_start_path;
 
     /**
      * Free SWitcher

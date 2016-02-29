@@ -53,6 +53,7 @@ rofi_SOURCES=\
     source/dialogs/combi.c\
     source/dialogs/window.c\
     source/dialogs/script.c\
+	source/dialogs/filemanager.c\
     include/rofi.h\
 	include/mode.h\
 	include/mode-private.h\
@@ -234,7 +235,7 @@ test-x1: ${bin_PROGRAMS}
 	echo "Test dmenu-normal-window"
 	$(top_srcdir)/test/run_test.sh 219 $(top_srcdir)/test/run_dmenu_normal_window_test.sh $(top_builddir)
 	echo "Test window"
-	$(top_srcdir)/test/run_test.sh 220 $(top_srcdir)/test/run_window_test.sh $(top_builddir) $(top_srcdir) 
+	$(top_srcdir)/test/run_test.sh 220 $(top_srcdir)/test/run_window_test.sh $(top_builddir) $(top_srcdir)
 	echo "End tests"
 
 
@@ -254,4 +255,3 @@ ohcount: ${rofi_SOURCES}
 
 doxy: doc/rofi.doxy ${rofi_SOURCES}
 	doxygen ${top_builddir}/doc/rofi.doxy
-
