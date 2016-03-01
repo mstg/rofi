@@ -171,8 +171,8 @@
      const FileManagerPrivateData *rmpd = (const FileManagerPrivateData *) sw->private_data;
      if (sw->next_input) {
          char rc[255];
-         sprintf(rc, "Command for: %s", sw->next_input_entry);
-         set_prompt(sw, g_strdup(rc));
+         sprintf(rc, "Command for %s:", sw->next_input_entry);
+         set_prompt((Mode*)sw, g_strdup(rc));
      }
      return sw->next_input ? 0 : rmpd->filed_list_length;
  }
